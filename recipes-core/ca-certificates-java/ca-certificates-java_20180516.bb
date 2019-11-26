@@ -32,7 +32,7 @@ B = "${WORKDIR}/build"
 JARFILENAME = "${BPN}.jar"
 
 python () {
-    runtime = d.getVar("PREFERRED_RPROVIDER_java2-runtime") or ""
+    runtime = d.getVar("PREFERRED_RPROVIDER_java2-runtime", False) or ""
     if not runtime in ("openjdk-8", "openjre-8"):
         raise bb.parse.SkipRecipe("PREFERRED_RPROVIDER_java2-runtime '%s' unsupported" % runtime)
 }

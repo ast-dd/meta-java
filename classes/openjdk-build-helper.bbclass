@@ -23,7 +23,7 @@ def openjdk_build_helper_get_parallel_make(d):
 # version.
 def openjdk_build_helper_get_cflags_by_cc_version(d, version):
     if version.isdigit():
-        return d.getVar('FLAGS_GCC%d' % int(version)) or ''
+        return d.getVar('FLAGS_GCC%d' % int(version), False) or ''
     return ''
 
 def openjdk_build_helper_get_build_cflags(d):
@@ -33,7 +33,7 @@ def openjdk_build_helper_get_build_cflags(d):
         cc = Popen(cmd, stdout=PIPE, stderr=PIPE)
         return cc.communicate()[0].decode('utf-8')[0]
 
-    build_cc = d.getVar('BUILD_CC')
+    build_cc = d.getVar('BUILD_CC', False)
     version = get_build_cc_version(build_cc)
     return openjdk_build_helper_get_cflags_by_cc_version(d, version)
 
@@ -43,7 +43,7 @@ def openjdk_build_helper_get_target_cflags(d):
     # in the cross case, trust that GCCVERSION is correct. This won't
     # work if the native toolchain is Clang, but as of this writing that
     # doesn't work anyway.
-    version = d.getVar('GCCVERSION')[0]
+    version = d.getVar('GCCVERSION', False)[0]
     # skip non digit characters at the beginning, e.g. from "linaro-6.2%"
     match = re.search("\d", version)
     if match:
@@ -83,7 +83,7 @@ def openjdk_build_helper_get_llvm_configure_arch(d):
     elif arch == "arm":
         arch = "arm"
     else:
-        if 'shark' in d.getVar('PACKAGECONFIG').split():
+        if 'shark' in d.getVar('PACKAGECONFIG', False).split():
             bb.warn("%s does not support %s in Shark builds yet" % (d.getVar('PN', True), arch) );
 
     return arch

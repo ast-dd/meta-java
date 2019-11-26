@@ -16,7 +16,7 @@ inherit java
 PACKAGE_ARCH ?= "all"
 # Fully expanded - so it applies the overrides as well
 PACKAGE_ARCH_EXPANDED := "${PACKAGE_ARCH}"
-inherit ${@oe.utils.ifelse(d.getVar('PACKAGE_ARCH_EXPANDED') == 'all', 'allarch', '')}
+inherit ${@oe.utils.ifelse(d.getVar('PACKAGE_ARCH_EXPANDED', False) == 'all', 'allarch', '')}
 
 # use java_stage for native packages
 JAVA_NATIVE_STAGE_INSTALL = "1"
